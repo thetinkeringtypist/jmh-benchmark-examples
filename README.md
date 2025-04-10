@@ -10,10 +10,10 @@ This project uses following:
 * Maven
 * Java 21
 * JMH
-* The IntelliJ plugin for IntelliJ
+* The JMH plugin for IntelliJ
 
 Most of the benchmarks measure differences between arrays and lists to easily demonstrate the
 performance differences between them. However, this does not mean that one implementation should
-be favored over another. Each one has it's own place in code and provides value in unique ways.
+be favored over another. Each one has its own place in code and provides value in unique ways.
 
 Enjoy!
