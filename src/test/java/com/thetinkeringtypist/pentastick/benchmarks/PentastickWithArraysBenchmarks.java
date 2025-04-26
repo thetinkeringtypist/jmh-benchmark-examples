@@ -8,77 +8,43 @@ import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.concurrent.TimeUnit;
 
-@State(Scope.Thread)
-@BenchmarkMode(Mode.Throughput)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 @Fork(1)
-@Warmup(iterations = 5)
-@Measurement(iterations = 5)
+@Warmup(iterations = 5, time = 5, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 5, time = 5, timeUnit = TimeUnit.SECONDS)
 public class PentastickWithArraysBenchmarks {
-    PentastickWithArrays pentastickWithArrays;
+    @State(Scope.Benchmark)
+    public static class BenchmarkState {
+        @Param({"TLP", "BLP", "TL", "BL", "TF", "BF", "TR", "BR", "TRP", "BRP"})
+        Por por;
 
-    @Setup
-    public void setup() {
-        pentastickWithArrays = new PentastickWithArrays();
+        PentastickWithArrays pentastick;
+
+        @Setup
+        public void setup() {
+            pentastick = new PentastickWithArrays();
+        }
+
+        @TearDown
+        public void tearDown() {
+            pentastick = null;
+        }
     }
 
     @Benchmark
-    public PentastickWithArrays withListsRotateTLP() {
-        pentastickWithArrays.rotate(Por.TLP);
-        return pentastickWithArrays;
-    }
-
-    @Benchmark
-    public PentastickWithArrays withListsRotateBLP() {
-        pentastickWithArrays.rotate(Por.BLP);
-        return pentastickWithArrays;
-    }
-
-    @Benchmark
-    public PentastickWithArrays withListsRotateTL() {
-        pentastickWithArrays.rotate(Por.TL);
-        return pentastickWithArrays;
-    }
-    @Benchmark
-    public PentastickWithArrays withListsRotateTF() {
-        pentastickWithArrays.rotate(Por.TF);
-        return pentastickWithArrays;
-    }
-
-    @Benchmark
-    public PentastickWithArrays withListsRotateBF() {
-        pentastickWithArrays.rotate(Por.BF);
-        return pentastickWithArrays;
-    }
-
-    @Benchmark
-    public PentastickWithArrays withListsRotateTR() {
-        pentastickWithArrays.rotate(Por.TR);
-        return pentastickWithArrays;
-    }
-
-    @Benchmark
-    public PentastickWithArrays withListsRotateBR() {
-        pentastickWithArrays.rotate(Por.BR);
-        return pentastickWithArrays;
-    }
-
-    @Benchmark
-    public PentastickWithArrays withListsRotateTRP() {
-        pentastickWithArrays.rotate(Por.TRP);
-        return pentastickWithArrays;
-    }
-
-    @Benchmark
-    public PentastickWithArrays withListsRotateBRP() {
-        pentastickWithArrays.rotate(Por.BRP);
-        return pentastickWithArrays;
+    public PentastickWithArrays rotate(BenchmarkState state, Blackhole blackhole) {
+        state.pentastick.rotate(state.por);
+        return state.pentastick;
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class PentastickWithArrays implements Puzzle {
+public class PentastickUsingShorts implements Puzzle {
 
     private static final short[] WING_ROW = new short[] {0, 1, 0, 1, 0, 0, 2, 0, 2, 0, 0, 3, 0, 3, 0, 0, 4, 0, 4, 0, 0, 5, 0, 5, 0};
     private static final short[] EDGE_ROW = new short[] {1, 0, 1, 0, 1, 2, 0, 2, 0, 2, 3, 0, 3, 0, 3, 4, 0, 4, 0, 4, 5, 0, 5, 0, 5};
@@ -23,11 +23,11 @@ public class PentastickWithArrays implements Puzzle {
     /**
      * Constructs a pentastick puzzle whose initial state is the solved state.
      */
-    public PentastickWithArrays() {
+    public PentastickUsingShorts() {
         this(null);
     }
 
-    public PentastickWithArrays(final short[][] initialState) {
+    public PentastickUsingShorts(final short[][] initialState) {
         pieces = new short[11][25];
 
         if (Objects.nonNull(initialState)) {
@@ -270,8 +270,8 @@ public class PentastickWithArrays implements Puzzle {
      * @return a deep copy of this object.
      */
     @Override
-    public PentastickWithArrays deepCopy() {
-        return new PentastickWithArrays(this.pieces);
+    public PentastickUsingShorts deepCopy() {
+        return new PentastickUsingShorts(this.pieces);
     }
 
     @Override
@@ -280,7 +280,7 @@ public class PentastickWithArrays implements Puzzle {
             return true;
         }
 
-        if (!(obj instanceof PentastickWithArrays that)) {
+        if (!(obj instanceof PentastickUsingShorts that)) {
             return false;
         }
 

@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class PentastickWithArrays implements Puzzle {
+public class PentastickUsingBytes implements Puzzle {
 
-    private static final short[] WING_ROW = new short[] {0, 1, 0, 1, 0, 0, 2, 0, 2, 0, 0, 3, 0, 3, 0, 0, 4, 0, 4, 0, 0, 5, 0, 5, 0};
-    private static final short[] EDGE_ROW = new short[] {1, 0, 1, 0, 1, 2, 0, 2, 0, 2, 3, 0, 3, 0, 3, 4, 0, 4, 0, 4, 5, 0, 5, 0, 5};
+    private static final byte[] WING_ROW = new byte[] {0, 1, 0, 1, 0, 0, 2, 0, 2, 0, 0, 3, 0, 3, 0, 0, 4, 0, 4, 0, 0, 5, 0, 5, 0};
+    private static final byte[] EDGE_ROW = new byte[] {1, 0, 1, 0, 1, 2, 0, 2, 0, 2, 3, 0, 3, 0, 3, 4, 0, 4, 0, 4, 5, 0, 5, 0, 5};
     private static final int NUM_ROWS_IN_SLICE = 7;
     private static final int NUM_COLS_IN_SLICE = 8;
     private static final List<Por> POR_LIST = new ArrayList<>(Por.allOf());
@@ -17,18 +17,18 @@ public class PentastickWithArrays implements Puzzle {
     /**
      * The pieces of pentastick. This starts off as the initial state of the puzzle and is updated with rotations
      */
-    private final short[][] pieces;
+    private final byte[][] pieces;
 
 
     /**
      * Constructs a pentastick puzzle whose initial state is the solved state.
      */
-    public PentastickWithArrays() {
+    public PentastickUsingBytes() {
         this(null);
     }
 
-    public PentastickWithArrays(final short[][] initialState) {
-        pieces = new short[11][25];
+    public PentastickUsingBytes(final byte[][] initialState) {
+        pieces = new byte[11][25];
 
         if (Objects.nonNull(initialState)) {
             for (int i = 0; i < initialState.length; i++) {
@@ -58,9 +58,9 @@ public class PentastickWithArrays implements Puzzle {
         builder.append("\n");
         builder.append(String.format("----+%s\n", "-".repeat(100)));
 
-        for (short[] row : pieces) {
+        for (byte[] row : pieces) {
             builder.append(String.format("%3d | ", rowCounter));
-            for (short p : row) {
+            for (byte p : row) {
                 builder.append(String.format("%2d ", p)).append(" ");
             }
             builder.delete(builder.length() - 2, builder.length() - 1);
@@ -94,10 +94,10 @@ public class PentastickWithArrays implements Puzzle {
                 : (y + NUM_COLS_IN_SLICE - 1);
 
         // store the corners
-        final short tlCorner = pieces[x][y];
-        final short blCorner = pieces[rowIndex][y];
-        final short trCorner = pieces[x][colIndex];
-        final short brCorner = pieces[rowIndex][colIndex];
+        final byte tlCorner = pieces[x][y];
+        final byte blCorner = pieces[rowIndex][y];
+        final byte trCorner = pieces[x][colIndex];
+        final byte brCorner = pieces[rowIndex][colIndex];
 
         final int middleRows = NUM_ROWS_IN_SLICE / 2;
 
@@ -113,7 +113,7 @@ public class PentastickWithArrays implements Puzzle {
                     int adjustedYIndex = y + j < pieces[x + i].length ? y + j : j - (NUM_COLS_IN_SLICE / 2);
 
                     // Swap
-                    short temp = pieces[rowIndex - i][adjustedColIndex];
+                    byte temp = pieces[rowIndex - i][adjustedColIndex];
                     pieces[rowIndex - i][adjustedColIndex] = pieces[x + i][adjustedYIndex];
                     pieces[x + i][adjustedYIndex] = temp;
                 }
@@ -125,7 +125,7 @@ public class PentastickWithArrays implements Puzzle {
             for (int i = 0; i < middleRows; i++) {
                 for (int j = 0; j < NUM_COLS_IN_SLICE; j++) {
                     // Swap
-                    short temp = pieces[rowIndex - i][colIndex - j];
+                    byte temp = pieces[rowIndex - i][colIndex - j];
                     pieces[rowIndex - i][colIndex - j] = pieces[x + i][y + j];
                     pieces[x + i][y + j] = temp;
                 }
@@ -133,11 +133,11 @@ public class PentastickWithArrays implements Puzzle {
         }
 
         // Reverse the middle row of the slice
-        final short[] row = pieces[x + Math.floorDiv(NUM_ROWS_IN_SLICE, 2)];
+        final byte[] row = pieces[x + Math.floorDiv(NUM_ROWS_IN_SLICE, 2)];
         final int middle = NUM_COLS_IN_SLICE / 2;
         for (int i = 0; i < middle; i++) {
             // Swap
-            short temp = row[y + i];
+            byte temp = row[y + i];
             row[y + i] = row[colIndex - i];
             row[colIndex - i] = temp;
         }
@@ -166,7 +166,7 @@ public class PentastickWithArrays implements Puzzle {
     @Override
     public void rotateUnrolled(final Por por) {
         // No check for Por.UNKNOWN
-        short temp;
+        byte temp;
 
         int x = por.getX();
         int y = por.getY();
@@ -264,14 +264,15 @@ public class PentastickWithArrays implements Puzzle {
         pieces[xp3][yp4] = temp;
     }
 
+
     /**
      * Creates a "deep copy" of this object.
      *
      * @return a deep copy of this object.
      */
     @Override
-    public PentastickWithArrays deepCopy() {
-        return new PentastickWithArrays(this.pieces);
+    public PentastickUsingBytes deepCopy() {
+        return new PentastickUsingBytes(this.pieces);
     }
 
     @Override
@@ -280,7 +281,7 @@ public class PentastickWithArrays implements Puzzle {
             return true;
         }
 
-        if (!(obj instanceof PentastickWithArrays that)) {
+        if (!(obj instanceof PentastickUsingBytes that)) {
             return false;
         }
 

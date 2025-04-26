@@ -6,11 +6,11 @@ public interface Puzzle {
     @Override
     String toString();
 
-    void rotate(Por por);
+    void rotate(final Por por);
 
-    void rotate(List<Por> moves);
+    void rotate(final List<Por> moves);
 
-    void rotate(Por... moves);
+    void rotate(final Por... moves);
 
     Puzzle deepCopy();
 
@@ -21,4 +21,6 @@ public interface Puzzle {
     int hashCode();
 
     void scramble(final int numMoves);
+
+    void rotateUnrolled(final Por por);
 }
